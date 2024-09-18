@@ -1,0 +1,19 @@
+﻿public enum SkystoneType
+{
+    DrowLanceMaster,
+    MohawkCyclops,
+    BlasterTroll,
+    DrowArcher,
+    ChompyBot9000,
+    InHumanShield,
+    ArkeyanJouster,
+    D_Riveter,
+    JawBreaker,
+    ArkeyanDuelist,
+    BagOBomb,
+    ShadowDuke,
+    ArkeyanSniper,
+    Axecutioner,
+    ArmoredChompy,
+    BlazerBrewer
+}

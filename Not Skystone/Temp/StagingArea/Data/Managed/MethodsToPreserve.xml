@@ -1,0 +1,33 @@
+<linker>
+	<assembly fullname="Assembly-CSharp" ignoreIfMissing="1">
+		<type fullname="ConcedeScreen">
+			<method name="ClickedOK"/>
+		</type>
+		<type fullname="HostGamePanel">
+			<method name="CreateRoom"/>
+		</type>
+		<type fullname="JoinButton">
+			<method name="Clicked"/>
+		</type>
+		<type fullname="PauseScreen">
+			<method name="MainMenuClicked"/>
+			<method name="OnConcedeClicked"/>
+			<method name="OnContinueClicked"/>
+		</type>
+		<type fullname="StartScreen">
+			<method name="StartOffline"/>
+		</type>
+		<type fullname="VictoryView">
+			<method name="OnMainMenuPressed"/>
+			<method name="OnResetPressed"/>
+		</type>
+		<type fullname="WaitScreen">
+			<method name="CancelClicked"/>
+		</type>
+	</assembly>
+	<assembly fullname="UnityEngine.CoreModule" ignoreIfMissing="1">
+		<type fullname="UnityEngine.GameObject">
+			<method name="SetActive"/>
+		</type>
+	</assembly>
+</linker>
