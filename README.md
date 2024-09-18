@@ -3,19 +3,85 @@
     <img src="readme/Banner.PNG" alt="Not Skystone Banner"><br>
 </p>
 
-"Not Skystones" is a prototype clone of a minigame called ["Skystones"](https://skylanders.fandom.com/wiki/Skystones) from the Skylanders videogame series. This small project was made as a practical example of the MVC code pattern that I was learning about at the beginning of my <b>3. Semester </b> at the [S4G-School for Games](https://www.school4games.net/).
+This Project represents a revisited version of a previous project called ["Not Skystone"](https://github.com/BasKrueger/Not-Skystone). This Update also adds an online multiplayer mode using the Photon plugin.
 
-# Gameplay
-https://github.com/BasKrueger/Not-Skystone/assets/147401575/52d904b3-d42a-4e3a-9048-9bfd0e11d749
+# Highlight: Online Multiplayer
 
-"Not Skystones" is a turn based pvp strategy board game. Players are playing their stones on the free spaces of a 3x3 gameboard. Each stone also has attack power in each of the 4 direction. If you play your stone adjecent to one that's under the enemies control, and your stone has more power in the enemy stones direction, than the enemy stone has power in your stones direction, then you take control of the enemy stone. The game ends after there are a total of 9 stones on the board and the player who controls most of them wins the game. 
+
+https://github.com/user-attachments/assets/5151959d-eb3a-44f3-baad-2b9bc6eda270
+
+
+Since the project already made use of the Model-View-Controller code pattern I figured it's a nice starting point for experimenting with online multiplayer logic. For this purpose the project now makes use of the Photon plugin. 
+Through a new UI the player is now able to host and join games. From a technical standpoint the gamelogic only runs on the Host, he basically becomes the server. If the other use wants to perform an action like playing a stone it now sends a RPC to the host, which then applies the action to its model. 
+Any resulting gamestate then gets seriailzed and send to both players, where their Views then display the state.
+
+On top of the multiplayer mode I also added supplementary features like
+- Disconnect messages and automatic match closure when the other player leaves
+- ability to concede against another player
+- button to vote for a rematch
+
+# General Improvements
+While the previous iteration did work properly, in hindsight I wasn't completely satisified with the code architecture. Thus with this 2.0 release I rewrote large chunks of the previous gameplay code to increase readability and make the code easier to maintain. Take the following case for example:
+
+[Now:](https://github.com/BasKrueger/Not-Skystone-2.0/blob/main/Not%20Skystone/Assets/Scripts/Models/SkystoneModel.cs)
+```
+public void Attack(SkystoneModel other, Vector2Int direction)
+	{
+		if(other != null)
+		{
+			if(this.ownerID != other.ownerID && this.spikes[direction] > other.spikes[direction * - 1])
+			{
+				other.ownerID = this.ownerID;
+			}
+		}
+	}
+```
+[Previously:](https://github.com/BasKrueger/Not-Skystone/blob/main/Not%20Skystone/Assets/Scripts/Models/BoardModel.cs)
+```
+ private int TryToOvertakeNeighbours(SkystoneModel lastPlaced, int x, int y)
+    {
+        int score = 0;
+        SkystoneModel target;
+        if(x > 0)
+        {
+            target = tiles[x - 1, y];
+            if (target != null && lastPlaced.westSpikes > target.eastSpikes && lastPlaced.TryToOvertake(target))
+            {
+                score++;
+            }
+        }
+
+        if(x < 2)
+        {
+            target = tiles[x + 1, y];
+            if(target != null && lastPlaced.eastSpikes > target.westSpikes && lastPlaced.TryToOvertake(target))
+            {
+                score++;
+            }
+        }
+
+        if (y > 0)
+        {
+            target = tiles[x, y - 1];
+            if (target != null && lastPlaced.northSpikes > target.southSpikes && lastPlaced.TryToOvertake(target))
+            {
+                score++;
+            }
+        }
+
+        if (y < 2)
+        {
+            target = tiles[x, y +1];
+
+            if (target != null && lastPlaced.southSpikes > target.northSpikes && lastPlaced.TryToOvertake(target))
+            {
+                score++;
+            }
+        }
+
+        return score;
+    }
+```
 
 # How to run
-Clone this repository and open the project folder using at least Unity Version 2021.3.1. Alternatively you can play the latest build of the prototype right [here](https://suchti0352.itch.io/not-skystones) in your browser.
-
-# Highlight: Model View Controller Pattern
-This prototype makes extensive use of the Model View Controller (short MVC) pattern. There are many different definitions out there for this specific Code pattern, but I oriented myself on the following guidelines: 
-<p align="center">
-    <img src="readme/MVC.png" alt="MVC"><br>
-</p>
-The entire gamelogic (Model) is completely encapsulated from the rest, only offering specifically designed interfaces that's used by the Input (Controller). The Views responsibility is to display the latest state of the Model.
+You can play the current version of it [here](https://suchti0352.itch.io/not-skystones). Alternativaly feel free to download the reposetory and open it with at least Unity 2022.3.
