@@ -15,8 +15,8 @@ Since the project already made use of the Model-View-Controller code pattern I f
 Through a new UI the player is now able to host and join games. From a technical standpoint the gamelogic only runs on the Host, he basically becomes the server. If the other use wants to perform an action like playing a stone it now sends a RPC to the host, which then applies the action to its model. 
 Any resulting gamestate then gets seriailzed and send to both players, where their Views then display the state.
 
-On top of the multiplayer mode I also added supplementary features like
-- Disconnect messages and automatic match closure when the other player leaves
+On top of the multiplayer mode I also added supplementary features like:
+- disconnect messages and automatic match closure when the other player leaves
 - ability to concede against another player
 - button to vote for a rematch
 
