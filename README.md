@@ -25,6 +25,17 @@ While the previous iteration did work properly, in hindsight I wasn't completely
 
 [Now:](https://github.com/BasKrueger/Not-Skystone-2.0/blob/main/Not%20Skystone/Assets/Scripts/Models/SkystoneModel.cs)
 ```
+if(board.ContainsKey(slot) && board[slot] == null)
+	{
+		board[slot] = stone;
+
+		stone.Attack(board.TryGetValue(slot + Vector2Int.up), Vector2Int.up);
+		stone.Attack(board.TryGetValue(slot + Vector2Int.right), Vector2Int.right);
+		stone.Attack(board.TryGetValue(slot + Vector2Int.down), Vector2Int.down);
+		stone.Attack(board.TryGetValue(slot + Vector2Int.left), Vector2Int.left);
+		...
+	}
+
 public void Attack(SkystoneModel other, Vector2Int direction)
 	{
 		if(other != null)
